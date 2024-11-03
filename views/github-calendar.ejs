@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Contributor Calendar</title>
+    <!-- Include the GitHub Contributions Widget script from jsDelivr -->
+    <script type="module" defer src="https://cdn.jsdelivr.net/gh/imananoosheh/github-contributions-fetch@latest/github_calendar_widget.js"></script>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <h1>GitHub Contributor Calendar</h1>
+    <p>This calendar shows your GitHub contributions.</p>
+
+    <!-- Add the container for the calendar with the dynamic GitHub username -->
+    <div id="calendar-component" username="<%= username %>" theme-color="#4285f4" background-color="#f7f7f7"></div>
+</body>
+</html>

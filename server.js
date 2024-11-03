@@ -68,7 +68,18 @@ app.get('/auth/github/callback',
     res.redirect('/profile');
   });
 
+  // Projects page
+app.get('/projects', (req, res) => {
+    res.render('projects');
+  });
   
+  // GitHub Contributor Calendar page
+  app.get('/github-calendar', (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+    }
+    res.render('github-calendar', { username: req.user.username });
+  });
 
 // Start the server
 app.listen(PORT, () => {
