@@ -8,10 +8,27 @@ fi
 
 echo "Starting setup..."
 
+# Function to check if a port is in use
+function check_port() {
+  if lsof -i:$1 > /dev/null; then
+    echo "Port $1 is already in use. Please free it or use a different port."
+    exit 1
+  fi
+}
+
+# Check if required ports are available
+check_port 80
+check_port 8080
+check_port 8081
+check_port 8082
+
 # Update and install Nginx and HAProxy
 echo "Installing Nginx and HAProxy..."
 apt update
-apt install -y nginx haproxy
+if ! apt install -y nginx haproxy; then
+  echo "Failed to install Nginx or HAProxy. Exiting."
+  exit 1
+fi
 
 # Configure the first Nginx instance on port 8081
 echo "Configuring Nginx instance on port 8081..."
@@ -53,11 +70,33 @@ ln -s /etc/nginx/sites-available/app2 /etc/nginx/sites-enabled/
 
 # Restart Nginx to apply changes
 echo "Restarting Nginx..."
-systemctl restart nginx
+if ! systemctl restart nginx; then
+  echo "Failed to restart Nginx. Exiting."
+  exit 1
+fi
 
-# Configure HAProxy
+# Configure HAProxy with port checks
 echo "Configuring HAProxy..."
-cat >> /etc/haproxy/haproxy.cfg <<EOF
+
+cat > /etc/haproxy/haproxy.cfg <<EOF
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
 
 frontend http_front
     bind *:80
@@ -77,7 +116,10 @@ EOF
 
 # Restart HAProxy to apply changes
 echo "Restarting HAProxy..."
-systemctl restart haproxy
+if ! systemctl restart haproxy; then
+  echo "Failed to restart HAProxy. Exiting."
+  exit 1
+fi
 
 echo "Setup complete."
 echo "You can access the load balancer at http://localhost"
