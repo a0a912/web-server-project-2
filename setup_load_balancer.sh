@@ -2,7 +2,7 @@
 
 # Ensure the script is run as root
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   echo "This script must be run as root"
    exit 1
 fi
 
@@ -77,7 +77,6 @@ fi
 
 # Configure HAProxy with port checks
 echo "Configuring HAProxy..."
-
 cat > /etc/haproxy/haproxy.cfg <<EOF
 global
     log /dev/log local0
@@ -99,7 +98,7 @@ defaults
     timeout server 50000
 
 frontend http_front
-    bind *:80
+    bind *:8085
     default_backend http_back
 
 backend http_back
