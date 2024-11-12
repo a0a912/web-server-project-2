@@ -9,7 +9,17 @@ require('dotenv').config();
 
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+
+passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: 'http://localhost:3000/auth/google/callback'},
+    function(accessToken, refreshToken, profile, cb) {
+        cb(null, profile);
+    }
+));
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID, // Replace with your GitHub Client ID
   clientSecret: process.env.GITHUB_CLIENT_SECRET, // Replace with your GitHub Client Secret
@@ -48,6 +58,9 @@ app.get('/profile', (req, res) => {
     if (!req.isAuthenticated()) {
       return res.redirect('/login');
     }
+    if(req.user.displayName){
+        return res.render('profile', { username: req.user.displayName });
+    }
     res.render('profile', { username: req.user.username });
   });
 
@@ -67,6 +80,18 @@ app.get('/auth/github/callback',
     // Redirect to the profile page upon successful login
     res.redirect('/profile');
   });
+
+// Route to initiate Google authentication
+app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'] }));
+
+// Google callback URL
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        // Redirect to the profile page upon successful login
+        res.redirect('/profile');
+    }
+);
 
   // Projects page
 app.get('/projects', (req, res) => {
