@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind Import -->
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Login</title>
 </head>
 <body>
-    <h1>Login Page</h1>
-    <p>This is a placeholder for the login page.</p>
-
-    
-    <!-- Login options -->
-    <div class="w-64">
-        <button 
-        class="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center text-sm"
-        onclick="window.location.href='/auth/github'"
-        >
-            <img class="w-6 mr-3" src="/img/github_logo_dark.png" alt="">  
-            Login with GitHub
-        </button>
-        <button 
-            class="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center text-sm"
-            onclick="window.location.href='/auth/google'"
-        >
-            <img class="w-6 mr-3" src="/img/google_logo.png" alt="">  
-            Login with Google
-        </button>
+    <div class="flex flex-col">
+        <div>
+            <h1>Login Page</h1>
+            <p>This is a placeholder for the login page.</p>
+        </div>
+        
+        <!-- Login options -->
+        <div class="w-64">
+            <button 
+                class="bg-white border-black border py-2 w-full rounded-xl mt-5 flex justify-center text-sm"
+                onclick="window.location.href='/auth/github'"
+            >
+                <img class="w-6 mr-3" src="/img/github_logo_dark.png" alt="">  
+                Login with GitHub
+            </button>
+            <button 
+                class="bg-white border-black border py-2 w-full rounded-xl mt-5 flex justify-center text-sm"
+                onclick="window.location.href='/auth/google'"
+            >
+                <img class="w-6 mr-3" src="/img/google_logo.png" alt="">  
+                Login with Google
+            </button>
+        </div>
     </div>
-
 </body>
 </html>
