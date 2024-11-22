@@ -5,7 +5,7 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 require('dotenv').config();
 
-
+app.use(express.static(__dirname + '/public'));
 
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
