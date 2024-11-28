@@ -86,6 +86,10 @@ span {
     color: white;
 }
 
+#editProjectForm {
+    display: none;
+}
+
     </style>
 </head>
 <body>
@@ -106,6 +110,15 @@ span {
             <h2>Projects</h2>
             <ul id="projectList"></ul>
         </section>
+
+        <!-- Edit form -->
+        <form id="editProjectForm">
+            <label for="editProjectTitle">Edit project title:</label>
+            <input type="text" id="editProjectTitle" required>
+            <button type="button" id="saveProjectButton">Save</button>
+        </form>
+
+        
     </main>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -140,6 +153,7 @@ span {
                     const projectItem = target.parentElement;
                     projectItem.remove();
                 }
+                /*
 
                 // Edit project
                 if (target.classList.contains("edit")) {
@@ -159,6 +173,32 @@ span {
                     target.classList.remove("edit");
                     target.classList.add("save");
                 }
+                    */
+
+                    // Edit project 2
+                    if (target.classList.contains("edit")) {
+                        const projectItem = target.parentElement;
+                        const currentTitle = projectItem.querySelector("span").textContent;
+
+                        // Unblock the edit form
+                        const editProjectForm = document.getElementById("editProjectForm");
+                        editProjectForm.style.display = "block";
+
+                        // Populate the edit form with the current title
+                        const editProjectTitle = document.getElementById("editProjectTitle");
+                        editProjectTitle.value = currentTitle;
+
+                        // Add event listener to the save button
+                        const saveProjectButton = document.getElementById("saveProjectButton");
+                        saveProjectButton.addEventListener("click", () => {
+                            // Replace the title span with the edited title
+                            const editedTitle = editProjectTitle.value;
+                            projectItem.querySelector("span").textContent = editedTitle;
+
+                            // Hide the edit form
+                            editProjectForm.style.display = "none";
+                        });
+                    }
 
                 // Save edited project
                 if (target.classList.contains("save")) {
