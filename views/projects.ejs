@@ -6,11 +6,179 @@
     <!-- Tailwind Import -->
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Projects</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    padding: 1rem;
+}
+
+form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+form input {
+    flex: 1;
+    padding: 0.5rem;
+}
+
+form button {
+    padding: 0.5rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #1f2937;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+}
+
+ul li button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+}
+
+ul li button.edit {
+    background-color: #4CAF50;
+}
+
+ul li button:hover {
+    background-color: darkred;
+}
+
+ul li button.edit:hover {
+    background-color: #3e8e41;
+}
+
+span {
+    color: white;
+}
+
+    </style>
 </head>
 <body>
     <%- include('partials/header') %>
 
     <h1>Projects</h1>
     <p>This is a placeholder for the Projects page.</p>
+
+    <main>
+        <section>
+            <h2>Add a project</h2>
+            <form id="projectForm">
+                <input type="text" id="projectTitle" placeholder="Project title" required>
+                <button type="submit">Add project</button>
+            </form>
+        </section>
+        <section>
+            <h2>Projects</h2>
+            <ul id="projectList"></ul>
+        </section>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const projectForm = document.getElementById("projectForm");
+            const projectList = document.getElementById("projectList");
+
+            // Add project
+            projectForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const projectTitle = document.getElementById("projectTitle").value.trim();
+
+                if (projectTitle) {
+                    const projectItem = document.createElement("li");
+                    projectItem.innerHTML = `
+                        <span>${projectTitle}</span>
+                        <button class="edit">Edit</button>
+                        <button class="delete">Delete</button>
+                    `;
+                    projectList.appendChild(projectItem);
+
+                    // Clear the input field
+                    projectForm.reset();
+                }
+            });
+
+            // Edit and delete projects
+            projectList.addEventListener("click", (e) => {
+                const target = e.target;
+
+                // Delete project
+                if (target.classList.contains("delete")) {
+                    const projectItem = target.parentElement;
+                    projectItem.remove();
+                }
+
+                // Edit project
+                if (target.classList.contains("edit")) {
+                    const projectItem = target.parentElement;
+                    const currentTitle = projectItem.querySelector("span").textContent;
+
+                    // Create an input field for editing
+                    const editInput = document.createElement("input");
+                    editInput.type = "text";
+                    editInput.value = currentTitle;
+
+                    // Replace the title span with the input field
+                    projectItem.querySelector("span").replaceWith(editInput);
+
+                    // Change the "Edit" button to "Save"
+                    target.textContent = "Save";
+                    target.classList.remove("edit");
+                    target.classList.add("save");
+                }
+
+                // Save edited project
+                if (target.classList.contains("save")) {
+                    const projectItem = target.parentElement;
+                    const editInput = projectItem.querySelector("input");
+
+                    // Replace the input field with the updated title
+                    const updatedTitle = document.createElement("span");
+                    updatedTitle.textContent = editInput.value;
+                    editInput.replaceWith(updatedTitle);
+
+                    // Change the "Save" button back to "Edit"
+                    target.textContent = "Edit";
+                    target.classList.remove("save");
+                    target.classList.add("edit");
+                }
+            });
+        });
+    </script>
+
+
 </body>
 </html>
