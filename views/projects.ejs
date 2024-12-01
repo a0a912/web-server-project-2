@@ -14,13 +14,6 @@ body {
     background-color: #f4f4f4;
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-}
-
 main {
     padding: 1rem;
 }
@@ -89,26 +82,14 @@ span {
 #editProjectForm {
     display: none;
 }
+#projectForm{
+    padding-top: 1%;
+}
 
     </style>
 </head>
 <body>
-<!-- Navigation -->
-<nav class="bg-gray-800 p-4">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="/" class="text-white text-lg font-bold">MyApp</a>
-        <div class="flex space-x-4">
-            <% if (!isAuthenticated) { %>
-                <a href="/login" class="text-white hover:text-gray-300">Log In</a>
-            <% } else { %>
-                <a href="/profile" class="text-white hover:text-gray-300">Profile</a>
-                <a href="/projects" class="text-white hover:text-gray-300">Projects</a>
-                <a href="/github-calendar" class="text-white hover:text-gray-300">Github</a>
-                <a href="/logout" class="text-white hover:text-gray-300">Logout</a>
-            <% } %>
-        </div>
-    </div>
-</nav>
+    <%-include ('partials/header.ejs')%>
     <div class="projects-section">
         <h1 class="text-5xl font-bold mb-6">Projects</h1>
         <p>Create projects to showcase your work</p>
@@ -116,14 +97,14 @@ span {
 
     <main>
         <section>
-            <h2>Add a project</h2>
+            <h2 class="text-4xl font-bold dark:text-white">Add a project</h2>
             <form id="projectForm">
                 <input type="text" id="projectTitle" placeholder="Project title" required>
                 <button type="submit">Add project</button>
             </form>
         </section>
         <section>
-            <h2>Projects</h2>
+            <h2 class="text-4xl font-bold dark:text-white">Projects</h2>
             <ul id="projectList"></ul>
         </section>
 

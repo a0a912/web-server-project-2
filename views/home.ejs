@@ -7,24 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-teal-100 text-gray-900">
-
-    <!-- Navigation -->
-    <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-white text-lg font-bold">MyApp</a>
-            <div class="flex space-x-4">
-                <% if (!isAuthenticated) { %>
-                <a href="/login" class="text-white hover:text-gray-300">Log In</a>
-                <% } else { %>
-                <a href="/profile" class="text-white hover:text-gray-300">Profile</a>
-                <a href="/projects" class="text-white hover:text-gray-300">Projects</a>
-                <a href="/github-calendar" class="text-white hover:text-gray-300">Github</a>
-                <a href="/logout" class="text-white hover:text-gray-300">Logout</a>
-                <% } %>
-            </div>
-        </div>
-    </nav>
-
+    <%-include ('partials/header.ejs')%>
     <!-- Hero Section -->
     <section class="text-center py-20">
         <div class="container mx-auto">
