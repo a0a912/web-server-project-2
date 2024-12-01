@@ -6,9 +6,9 @@
     <!-- Tailwind Import -->
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Projects</title>
+    <link rel="stylesheet" href="main.css">
     <style>
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -93,10 +93,26 @@ span {
     </style>
 </head>
 <body>
-    <%- include('partials/header') %>
-
-    <h1>Projects</h1>
-    <p>This is a placeholder for the Projects page.</p>
+<!-- Navigation -->
+<nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-white text-lg font-bold">MyApp</a>
+        <div class="flex space-x-4">
+            <% if (!isAuthenticated) { %>
+                <a href="/login" class="text-white hover:text-gray-300">Log In</a>
+            <% } else { %>
+                <a href="/profile" class="text-white hover:text-gray-300">Profile</a>
+                <a href="/projects" class="text-white hover:text-gray-300">Projects</a>
+                <a href="/github-calendar" class="text-white hover:text-gray-300">Github</a>
+                <a href="/logout" class="text-white hover:text-gray-300">Logout</a>
+            <% } %>
+        </div>
+    </div>
+</nav>
+    <div class="projects-section">
+        <h1 class="text-5xl font-bold mb-6">Projects</h1>
+        <p>Create projects to showcase your work</p>
+    </div>
 
     <main>
         <section>

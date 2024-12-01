@@ -35,6 +35,7 @@ passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
 const session = require('express-session');
+const {isAuthenticated} = require("passport/lib/http/request");
 
 app.use(session({ secret: 'yourSecretKey', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
@@ -46,7 +47,7 @@ app.use(passport.session());
 
 //Landing page
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home', { isAuthenticated: req.isAuthenticated() });
   });
 
 // Serve a simple "login" page
@@ -59,9 +60,9 @@ app.get('/profile', (req, res) => {
       return res.redirect('/login');
     }
     if(req.user.displayName){
-        return res.render('profile', { username: req.user.displayName });
+        return res.render('profile', { username: req.user.displayName, isAuthenticated: req.isAuthenticated() });
     }
-    res.render('profile', { username: req.user.username });
+    res.render('profile', { username: req.user.username, isAuthenticated: req.isAuthenticated() });
   });
 
   app.get('/logout', (req, res) => {
@@ -95,7 +96,10 @@ app.get('/auth/google/callback',
 
   // Projects page
 app.get('/projects', (req, res) => {
-    res.render('projects');
+    if (!req.isAuthenticated()) {
+        return res.redirect('/login');
+    }
+    res.render('projects', { isAuthenticated: req.isAuthenticated() });
   });
   
   // GitHub Contributor Calendar page
@@ -103,7 +107,7 @@ app.get('/projects', (req, res) => {
     if (!req.isAuthenticated()) {
       return res.redirect('/login');
     }
-    res.render('github-calendar', { username: req.user.username });
+    res.render('github-calendar', { username: req.user.username, isAuthenticated: req.isAuthenticated() });
   });
 
 // Start the server
